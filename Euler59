@@ -1,0 +1,65 @@
+'''
+Created on 20 Dec 2012
+
+@author: Campbell
+
+Euler 59 - Decode message.
+Known that it uses XOR matching against a repeated 3 lower case letter key. 
+'''
+import time
+from collections import Counter
+
+tic = time.clock()
+
+with open("cipher1.txt") as f:
+    content = f.readlines()
+
+items = content[0].split(',')
+
+#'''
+###################
+#split into 3 lists and find most frequent character in each
+#(which will probably be ' ')
+char1 = []
+char2 = []
+char3 = []
+for line in range(0,len(items) - 1,3):
+    char1.append(items[line])
+    char2.append(items[line + 1])
+    char3.append(items[line + 2])
+
+
+c1 = Counter(char1)
+c2 = Counter(char2)
+c3 = Counter(char3)
+print('Most common 1 :',chr(int(c1.most_common(1)[0][0])))
+print('Most common 2 :',chr(int(c2.most_common(1)[0][0])))
+print('Most common 3 :',chr(int(c3.most_common(1)[0][0])))
+# take advantage of the fact that if (a XOR b) = c
+# then (c XOR b) = a to get the code characters,
+# assuming ' ' is the most common character
+codeint1 = int(c1.most_common(1)[0][0])^ord(' ')
+codeint2 = int(c2.most_common(1)[0][0])^ord(' ')
+codeint3 = int(c3.most_common(1)[0][0])^ord(' ')
+print('Code char 1 :',chr(codeint1))
+print('Code char 2 :',chr(codeint2))
+print('Code char 3 :',chr(codeint3))
+
+###################
+# use the 3 character code derived above to decode each of the 3 lists
+# and merge them
+
+decr = []
+decrnum = [46]
+for line in range(0,len(items) - 1,3):
+    decr.append(chr(codeint1^int(items[line])))
+    decr.append(chr(codeint2^int(items[line+1])))
+    decr.append(chr(codeint3^int(items[line+2])))
+    decrnum.append(codeint1^int(items[line]))
+    decrnum.append(codeint2^int(items[line+1]))
+    decrnum.append(codeint3^int(items[line+2]))
+print(''.join(decr))
+print(sum(decrnum))
+
+print("Time elapsed =", time.clock() - tic)
+
