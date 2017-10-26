@@ -77,5 +77,5 @@ while(cnt != WIDTH*HEIGHT):
 		if(a[y][x] + gg2[y][x+1] < a[y][x+1]):
 			a[y][x+1] = a[y][x] + gg2[y][x+1]
 
-print a
+print a, width, height
 print("euler83 took %f seconds" % (time.time() - s))
