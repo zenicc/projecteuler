@@ -45,6 +45,20 @@ def getNumPerm(n):
     l = itertools.permutations(str(n))
     return [int(''.join(x)) for x in l if int(''.join(x)) >= n]
 
+def getIntegers(n):
+    "return a set of the separate integers of the given number ie for 123 return {1,2,3}"
+    return [int(x) for x in str(n)]
+
+def getAllFactors(n):
+    if n < 2:
+        return [1]
+    all_factors = [1]
+    for p in range(2, int(n**0.5) + 1):
+        if n % p == 0:
+            all_factors.append(p)
+            all_factors.append(n/p)
+    return all_factors
+
 def getPrimeFactors(n):
     if n < 2:
         return []
@@ -96,7 +110,7 @@ def getPrimeFactorsZ(n, primeList):
             if rem == 1:
                 Factored = True
             else:
-                print n, a, primeList, factorList
+                print(n, a, primeList, factorList)
                 n = n/a
         else:
             a += 1
@@ -248,7 +262,7 @@ def getSqRoot(n, p):
     r = 1.5
     for i in range(8):
         r = 0.5*(r + n/r)
-        print r
+        print(r)
     
 
     return r
@@ -256,8 +270,11 @@ def getSqRoot(n, p):
 if __name__=='__main__':
     #testing
     s = time.time()
-    print(getSqRoot(5.0,100))
-        
+
+    for num in range(1000000):
+        f = getAllFactors(num)
+        #print(num,f,sum(f))
+
     print("Took %f seconds" % (time.time() - s))
 
     

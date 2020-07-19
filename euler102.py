@@ -96,5 +96,6 @@ if __name__ == '__main__':
 
     print("******* contained count =",containedCnt)
     print("******* not contained count =",notContainedCnt)
+    print("changed code")
 
     print("euler102 took %f seconds" % (time.time() - st))

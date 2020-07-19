@@ -87,14 +87,14 @@ if __name__=='__main__':
 
         resultArray[candSquare[0]][candSquare[1]] = baseArray[candSquare[0]][candSquare[1]]
 
-        while candSquare <> targetSquare:  
+        while candSquare != targetSquare:
                 boundaryArray = update_boundaryArray(candSquare, boundaryArray, resultArray, baseArray, heurArray)
                 nextSquare = get_min_boundary(boundaryArray)
                 resultArray[nextSquare[0]][nextSquare[1]] = boundaryArray[nextSquare[0]][nextSquare[1]] - heurArray[nextSquare[0]][nextSquare[1]]
                 candSquare = nextSquare
         
         
-        print resultArray[len(baseArray)-1][len(baseArray)-1]
+        print(resultArray[len(baseArray)-1][len(baseArray)-1])
         
         print("euler83 took %f seconds" % (time.time() - s))
 
