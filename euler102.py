@@ -97,5 +97,6 @@ if __name__ == '__main__':
     print("******* contained count =",containedCnt)
     print("******* not contained count =",notContainedCnt)
     print("changed code in ubuntu again")
+    print("******** yet another test on ubuntu **********")
 
     print("euler102 took %f seconds" % (time.time() - st))
