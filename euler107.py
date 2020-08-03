@@ -20,20 +20,80 @@ However, it is possible to optimise the network by removing some edges and still
 
 Using network.txt (right click and 'Save Link/Target As...'), a 6K text file containing a network with forty vertices, and given in matrix form, find the maximum saving which can be achieved by removing redundant edges whilst ensuring that the network remains connected.
 
+*****************************************
+Notes:
 
+    Use Prim's algorithm?
 
 '''
 
-import euler103
-import time, csv
+import time, csv, numpy
+
+def getNextVert(fList, iList, iFile):
+    minVertSize = numpy.inf
+
+    for f in fList:
+        for g in iList:
+            if iFile[f][g] < minVertSize:
+                minVertSize  = iFile[f][g]
+                minVert = [f, g]
+    return minVert, minVertSize
+
+
+
 
 if __name__ == '__main__':
     # testing
     st = time.time()
 
-    inFile = list(csv.reader(open(r'./p107_network - Copy.txt')))
+    verticeTot = 0
+    inTot = 0
+    inFile = list(csv.reader(open(r'./p107_network.txt')))
 
-    for r in range(len(inFile)):
-        print(inFile[r])
+    for inList in inFile:
+        inTot += sum([0 if x == '-' else int(x) for x in inList])
+        inList[:] = [numpy.inf if x == '-' else int(x) for x in inList]
+
+    verticeList = []
+    doneList = []
+    frontList = []
+    inList = [i for i in range(len(inFile))]
+
+    frontList.append(0)
+    inList.remove(0)
+
+    print(doneList)
+    print(frontList)
+    print(inList)
+
+    while len(inList) > 0:
+        vertice, verticeLen  = getNextVert(frontList, inList, inFile)
+        verticeTot += verticeLen
+        #print("moving ", vertice[1],"to frontier from ",vertice[0], "with value",verticeLen)
+        frontList.append(vertice[1])
+        inList.remove(vertice[1])
+        inFile[vertice[0]][vertice[1]] = numpy.inf
+        inFile[vertice[1]][vertice[0]] = numpy.inf
+        verticeList.append(vertice)
+        # the following is to reduce the size of the frontList - actually makes performance slightly worse for this size data but might be good for bigger datasets
+        for f in frontList:
+            Move = True
+            for g in range(len(inFile[f])):
+                if inFile[f][g] < numpy.inf and g in inList:
+                    Move = False
+            if Move:
+                doneList.append(f)
+                frontList.remove(f)
+
+    print("*************** vertice tot = ", verticeTot)
+    print("*************** in tot = ", inTot/2)
+    print("*************** answer = ", inTot/2 - verticeTot)
+    print("********************************************")
+    print("doneList",doneList)
+    print("frontList",frontList)
+    print("inList",inList)
+    print("verticeList",verticeList)
+
+
 
     print("euler107 took %f seconds" % (time.time() - st))
