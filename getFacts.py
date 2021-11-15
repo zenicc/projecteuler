@@ -5,7 +5,7 @@ Created on 14 June 2019
 
 
 '''
-import time, iccnumbers
+import time, iccnumbers, timeit
 
 
 def getFacts(n):
@@ -26,8 +26,11 @@ def getFacts(n):
 
 if __name__ == '__main__':
     # testing
-    n = 24
     s = time.time()
-    print(getFacts(n))
+    a = []
+    n = 27719
+    max = 0
+    a = getFacts(n)
+    print(a)
     print("First took %f seconds" % (time.time() - s))
     s = time.time()

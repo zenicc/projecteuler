@@ -6,7 +6,7 @@ Created on 2 Jan 2012
 
 '''
 
-import time, math, itertools
+import time, math, itertools, re
 
 def isPrime(n):
     "check if integer n is a prime"
@@ -33,6 +33,11 @@ def isPrime2(n):
             return False
     return True
 
+def isPrime3(n):
+        # see http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/
+        # found this - very clever but unbelievably slow - no idea why anyone would do this
+    return re.match(r'^1?$|^(11+?)\1+$', '1' * n) == None
+
 def isPermutation(num1, num2):
     "check if num1 is a permutation of num2"
     if sorted(str(num1)) == sorted(str(num2)):
@@ -56,7 +61,9 @@ def getAllFactors(n):
     for p in range(2, int(n**0.5) + 1):
         if n % p == 0:
             all_factors.append(p)
-            all_factors.append(n/p)
+            if int(n/p) != p:
+                all_factors.append(int(n/p))
+    all_factors.append(n)
     return all_factors
 
 def getPrimeFactors(n):
@@ -192,7 +199,21 @@ def getPrimes(n):
                     pass 
     return [x for x in primeList if x]
 
-   
+
+def getPrimesCount(n):
+    "return a list of first n primes"
+
+    a = 2
+    pList = []
+    while len(pList) < n:
+        if isPrime(a):
+            pList.append(a)
+        a += 1
+    return(pList)
+
+
+
+
 def comb(n, r):
     "return nCr"
     if 0 <= r <= n:
@@ -270,10 +291,10 @@ def getSqRoot(n, p):
 if __name__=='__main__':
     #testing
     s = time.time()
+    count = 0
+    print(getPrimes(4000000))
 
-    for num in range(1000000):
-        f = getAllFactors(num)
-        #print(num,f,sum(f))
+
 
     print("Took %f seconds" % (time.time() - s))
 
