@@ -38,7 +38,7 @@ Find the sum of all S(10, d).
 
 import time
 
-import iccnumbers, numpy
+import iccnumbers, numpy, itertools
 
 
 
@@ -46,39 +46,27 @@ if __name__ == '__main__':
     # testing
     st = time.time()
 
-    n = 10  # number of digits
+    n = 4  # number of digits
     pList = []
     for d in range(10):
         count = 0
         dArr = [d]*n
-        for l in range(len(dArr)): # try for all but 1 digit being the same
-            tArr = list(dArr)
-            #print(tArr)
-            for a in range(10):
-                tArr[l] = a
-                num = int(''.join(map(str, tArr)))
-                if iccnumbers.isPrime(num) and not(tArr[0] == 0):
+        tArr = list(dArr)
+        for a in range(10):
+            tArr[0] = a
+            myList = list(itertools.permutations(tArr))
+            aList = list(dict.fromkeys(myList))
+            for xl in aList:
+                #print(xl)
+                num = int(''.join(map(str, xl)))
+                if iccnumbers.isPrime(num) and not(xl[0] == 0):
                     pList.append(num)
                     count += 1
-        if count == 0: # no primes found for all but 1 digit the same, so try for all but 2 digits the same
-            for l1 in range(len(dArr)):
-                tArr = list(dArr)
-                #print(tArr)
-                for a in range(10):
-                    tArr[l1] = a
-                    for l2 in range(l1+1, len(dArr)):
-                        for b in range(10):
-                            tArr[l2] = b
-                            num = int(''.join(map(str, tArr)))
-                            if iccnumbers.isPrime(num) and not(tArr[0] == 0):
-                                pList.append(num)
-                                count += 1
-                            tArr[l2] = d
-        if count == 0: #still no prime found
+        if count == 0:
             print(d, " not found")
 
+    pList = list(dict.fromkeys(pList))
     print(pList)
-    print("sum = ", sum(pList))
 
 
-    print("euler111 took %f seconds" % (time.time() - st))
+    print("euler111a took %f seconds" % (time.time() - st))
